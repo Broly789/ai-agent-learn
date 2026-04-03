@@ -1,0 +1,15 @@
+[project]
+name = "ai-agent"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "langchain>=1.2.15",
+    "langchain-experimental>=0.4.1",
+    "langchain-ollama>=1.0.1",
+    "langchain-openai>=1.1.12",
+    "openai>=2.30.0",
+    "pydantic>=2.12.5",
+    "pyyaml>=6.0.3",
+]

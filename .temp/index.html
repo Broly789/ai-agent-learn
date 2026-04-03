@@ -1,0 +1,934 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>优品商城 - 专业电商平台</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Microsoft YaHei", Arial, sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+
+        /* 顶部导航栏 */
+        .header {
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-top {
+            background-color: #f8f8f8;
+            padding: 8px 0;
+            border-bottom: 1px solid #e5e5e5;
+        }
+
+        .header-top .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-top-links a {
+            color: #666;
+            text-decoration: none;
+            margin-left: 20px;
+            font-size: 12px;
+        }
+
+        .header-top-links a:hover {
+            color: #e4393c;
+        }
+
+        .header-main {
+            padding: 20px 0;
+        }
+
+        .header-main .container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            font-size: 32px;
+            font-weight: bold;
+            color: #e4393c;
+        }
+
+        .search-box {
+            display: flex;
+            width: 500px;
+        }
+
+        .search-box input {
+            flex: 1;
+            padding: 12px 15px;
+            border: 2px solid #e4393c;
+            border-right: none;
+            outline: none;
+            font-size: 14px;
+        }
+
+        .search-box button {
+            padding: 12px 30px;
+            background-color: #e4393c;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .search-box button:hover {
+            background-color: #d03030;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+        }
+
+        .header-actions .action-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: #666;
+            text-decoration: none;
+            font-size: 12px;
+        }
+
+        .header-actions .action-item:hover {
+            color: #e4393c;
+        }
+
+        .header-actions .action-item span {
+            font-size: 24px;
+            margin-bottom: 4px;
+        }
+
+        /* 导航菜单 */
+        .nav-menu {
+            background-color: #e4393c;
+        }
+
+        .nav-menu .container {
+            display: flex;
+        }
+
+        .nav-menu a {
+            color: #fff;
+            text-decoration: none;
+            padding: 15px 25px;
+            display: block;
+            font-size: 15px;
+            transition: background-color 0.3s;
+        }
+
+        .nav-menu a:hover {
+            background-color: #d03030;
+        }
+
+        /* 主内容区域 */
+        .main-content {
+            margin-top: 140px;
+            padding-bottom: 50px;
+        }
+
+        .container {
+            width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Banner轮播图 */
+        .banner-section {
+            margin-bottom: 30px;
+        }
+
+        .banner {
+            width: 100%;
+            height: 400px;
+            position: relative;
+            overflow: hidden;
+            border-radius: 8px;
+        }
+
+        .banner-slide {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .banner-slide.active {
+            opacity: 1;
+        }
+
+        .banner-slide:nth-child(1) {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .banner-slide:nth-child(2) {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+
+        .banner-slide:nth-child(3) {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+
+        .banner-content {
+            text-align: center;
+            color: #fff;
+        }
+
+        .banner-content h2 {
+            font-size: 48px;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .banner-content p {
+            font-size: 20px;
+            margin-bottom: 30px;
+        }
+
+        .banner-content button {
+            padding: 15px 40px;
+            background-color: #fff;
+            color: #333;
+            border: none;
+            border-radius: 30px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .banner-content button:hover {
+            transform: scale(1.05);
+        }
+
+        .banner-dots {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+        }
+
+        .banner-dots .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: rgba(255,255,255,0.5);
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .banner-dots .dot.active {
+            background-color: #fff;
+        }
+
+        .banner-arrows {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 20px;
+        }
+
+        .banner-arrows button {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: rgba(255,255,255,0.3);
+            border: none;
+            color: #fff;
+            font-size: 24px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .banner-arrows button:hover {
+            background-color: rgba(255,255,255,0.6);
+        }
+
+        /* 分类区域 */
+        .categories {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .category-item {
+            background-color: #fff;
+            padding: 25px 15px;
+            text-align: center;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .category-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .category-item .icon {
+            font-size: 40px;
+            margin-bottom: 10px;
+        }
+
+        .category-item .name {
+            font-size: 14px;
+            color: #666;
+        }
+
+        /* 商品列表 */
+        .products-section {
+            margin-bottom: 40px;
+        }
+
+        .section-title {
+            display: flex;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .section-title h3 {
+            font-size: 24px;
+            color: #333;
+            margin-right: 20px;
+        }
+
+        .section-title .line {
+            flex: 1;
+            height: 2px;
+            background-color: #e5e5e5;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 25px;
+        }
+
+        .product-card {
+            background-color: #fff;
+            border-radius: 8px;
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 220px;
+            background-color: #f8f8f8;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 60px;
+        }
+
+        .product-info {
+            padding: 20px;
+        }
+
+        .product-name {
+            font-size: 15px;
+            color: #333;
+            margin-bottom: 10px;
+            line-height: 1.4;
+            height: 42px;
+            overflow: hidden;
+        }
+
+        .product-price {
+            color: #e4393c;
+            font-size: 22px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .product-price span {
+            font-size: 14px;
+        }
+
+        .product-sales {
+            color: #999;
+            font-size: 12px;
+        }
+
+        .product-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .product-actions button {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 13px;
+            transition: background-color 0.3s;
+        }
+
+        .btn-cart {
+            background-color: #ff9900;
+            color: #fff;
+        }
+
+        .btn-cart:hover {
+            background-color: #e68a00;
+        }
+
+        .btn-buy {
+            background-color: #e4393c;
+            color: #fff;
+        }
+
+        .btn-buy:hover {
+            background-color: #d03030;
+        }
+
+        /* 页脚 */
+        .footer {
+            background-color: #2d2d2d;
+            color: #fff;
+            padding: 50px 0 30px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-section h4 {
+            font-size: 16px;
+            margin-bottom: 20px;
+            color: #fff;
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 12px;
+        }
+
+        .footer-section ul li a {
+            color: #999;
+            text-decoration: none;
+            font-size: 14px;
+            transition: color 0.3s;
+        }
+
+        .footer-section ul li a:hover {
+            color: #fff;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid #444;
+            padding-top: 30px;
+            text-align: center;
+            color: #999;
+            font-size: 14px;
+        }
+
+        /* 响应式调整 */
+        @media (max-width: 1200px) {
+            .container {
+                width: 100%;
+                padding: 0 20px;
+            }
+            
+            .products-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 头部 -->
+    <header class="header">
+        <div class="header-top">
+            <div class="container">
+                <div class="header-top-links">
+                    <a href="#">欢迎来到优品商城！</a>
+                    <a href="#">请登录</a>
+                    <a href="#">免费注册</a>
+                </div>
+                <div class="header-top-links">
+                    <a href="#">我的订单</a>
+                    <a href="#">客户服务</a>
+                    <a href="#">网站导航</a>
+                </div>
+            </div>
+        </div>
+        <div class="header-main">
+            <div class="container">
+                <div class="logo">🛒 优品商城</div>
+                <div class="search-box">
+                    <input type="text" placeholder="搜索商品...">
+                    <button>搜索</button>
+                </div>
+                <div class="header-actions">
+                    <a href="#" class="action-item">
+                        <span>👤</span>
+                        我的账户
+                    </a>
+                    <a href="#" class="action-item">
+                        <span>❤️</span>
+                        我的收藏
+                    </a>
+                    <a href="#" class="action-item">
+                        <span>🛒</span>
+                        购物车
+                    </a>
+                </div>
+            </div>
+        </div>
+        <nav class="nav-menu">
+            <div class="container">
+                <a href="#">首页</a>
+                <a href="#">数码电器</a>
+                <a href="#">服装鞋包</a>
+                <a href="#">美妆护肤</a>
+                <a href="#">家居生活</a>
+                <a href="#">食品生鲜</a>
+                <a href="#">母婴玩具</a>
+                <a href="#">图书文娱</a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- 主内容 -->
+    <main class="main-content">
+        <!-- Banner轮播图 -->
+        <section class="banner-section">
+            <div class="container">
+                <div class="banner">
+                    <div class="banner-slide active">
+                        <div class="banner-content">
+                            <h2>年终大促 全场5折起</h2>
+                            <p>限时抢购 不容错过</p>
+                            <button>立即抢购</button>
+                        </div>
+                    </div>
+                    <div class="banner-slide">
+                        <div class="banner-content">
+                            <h2>新品上市 首发优惠</h2>
+                            <p>科技改变生活</p>
+                            <button>查看详情</button>
+                        </div>
+                    </div>
+                    <div class="banner-slide">
+                        <div class="banner-content">
+                            <h2>会员专享 多重好礼</h2>
+                            <p>注册即送100元券</p>
+                            <button>立即注册</button>
+                        </div>
+                    </div>
+                    <div class="banner-dots">
+                        <div class="dot active" data-index="0"></div>
+                        <div class="dot" data-index="1"></div>
+                        <div class="dot" data-index="2"></div>
+                    </div>
+                    <div class="banner-arrows">
+                        <button class="prev">❮</button>
+                        <button class="next">❯</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 分类导航 -->
+        <section class="categories-section">
+            <div class="container">
+                <div class="categories">
+                    <div class="category-item">
+                        <div class="icon">📱</div>
+                        <div class="name">手机数码</div>
+                    </div>
+                    <div class="category-item">
+                        <div class="icon">💻</div>
+                        <div class="name">电脑办公</div>
+                    </div>
+                    <div class="category-item">
+                        <div class="icon">👕</div>
+                        <div class="name">服装鞋包</div>
+                    </div>
+                    <div class="category-item">
+                        <div class="icon">💄</div>
+                        <div class="name">美妆护肤</div>
+                    </div>
+                    <div class="category-item">
+                        <div class="icon">🏠</div>
+                        <div class="name">家居家装</div>
+                    </div>
+                    <div class="category-item">
+                        <div class="icon">🍎</div>
+                        <div class="name">食品生鲜</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 商品列表 -->
+        <section class="products-section">
+            <div class="container">
+                <div class="section-title">
+                    <h3>🔥 热销商品</h3>
+                    <div class="line"></div>
+                </div>
+                <div class="products-grid">
+                    <div class="product-card">
+                        <div class="product-image">📱</div>
+                        <div class="product-info">
+                            <div class="product-name">Apple iPhone 15 Pro Max 256GB 深空黑色</div>
+                            <div class="product-price"><span>¥</span>9999</div>
+                            <div class="product-sales">已售 2.3万+</div>
+                            <div class="product-actions">
+                                <button class="btn-cart">加入购物车</button>
+                                <button class="btn-buy">立即购买</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-card">
+                        <div class="product-image">💻</div>
+                        <div class="product-info">
+                            <div class="product-name">MacBook Pro 14英寸 M3芯片 16GB 512GB</div>
+                            <div class="product-price"><span>¥</span>14999</div>
+                            <div class="product-sales">已售 1.5万+</div>
+                            <div class="product-actions">
+                                <button class="btn-cart">加入购物车</button>
+                                <button class="btn-buy">立即购买</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-card">
+                        <div class="product-image">🎧</div>
+                        <div class="product-info">
+                            <div class="product-name">Sony WH-1000XM5 无线降噪耳机 黑色</div>
+                            <div class="product-price"><span>¥</span>2499</div>
+                            <div class="product-sales">已售 5.8万+</div>
+                            <div class="product-actions">
+                                <button class="btn-cart">加入购物车</button>
+                                <button class="btn-buy">立即购买</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-card">
+                        <div class="product-image">⌚</div>
+                        <div class="product-info">
+                            <div class="product-name">Apple Watch Series 9 GPS 45mm 午夜色</div>
+                            <div class="product-price"><span>¥</span>3299</div>
+                            <div class="product-sales">已售 3.2万+</div>
+                            <div class="product-actions">
+                                <button class="btn-cart">加入购物车</button>
+                                <button class="btn-buy">立即购买</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-card">
+                        <div class="product-image">📷</div>
+                        <div class="product-info">
+                            <div class="product-name">Canon EOS R6 Mark II 全画幅微单相机</div>
+                            <div class="product-price"><span>¥</span>16999</div>
+                            <div class="product-sales">已售 8千+</div>
+                            <div class="product-actions">
+                                <button class="btn-cart">加入购物车</button>
+                                <button class="btn-buy">立即购买</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-card">
+                        <div class="product-image">🎮</div>
+                        <div class="product-info">
+                            <div class="product-name">PlayStation 5 游戏主机 光驱版</div>
+                            <div class="product-price"><span>¥</span>3899</div>
+                            <div class="product-sales">已售 4.1万+</div>
+                            <div class="product-actions">
+                                <button class="btn-cart">加入购物车</button>
+                                <button class="btn-buy">立即购买</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-card">
+                        <div class="product-image">🖥️</div>
+                        <div class="product-info">
+                            <div class="product-name">Dell U2723QE 27英寸 4K显示器 IPS屏</div>
+                            <div class="product-price"><span>¥</span>4599</div>
+                            <div class="product-sales">已售 1.2万+</div>
+                            <div class="product-actions">
+                                <button class="btn-cart">加入购物车</button>
+                                <button class="btn-buy">立即购买</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-card">
+                        <div class="product-image">⌨️</div>
+                        <div class="product-info">
+                            <div class="product-name">Logitech MX Keys 无线键盘 黑色</div>
+                            <div class="product-price"><span>¥</span>799</div>
+                            <div class="product-sales">已售 6.5万+</div>
+                            <div class="product-actions">
+                                <button class="btn-cart">加入购物车</button>
+                                <button class="btn-buy">立即购买</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 推荐商品 -->
+        <section class="products-section">
+            <div class="container">
+                <div class="section-title">
+                    <h3>⭐ 为您推荐</h3>
+                    <div class="line"></div>
+                </div>
+                <div class="products-grid">
+                    <div class="product-card">
+                        <div class="product-image">👟</div>
+                        <div class="product-info">
+                            <div class="product-name">Nike Air Max 270 男子运动鞋 黑白配色</div>
+                            <div class="product-price"><span>¥</span>899</div>
+                            <div class="product-sales">已售 3.8万+</div>
+                            <div class="product-actions">
+                                <button class="btn-cart">加入购物车</button>
+                                <button class="btn-buy">立即购买</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-card">
+                        <div class="product-image">👜</div>
+                        <div class="product-info">
+                            <div class="product-name">COACH 蔻驰 女士手提包 经典款</div>
+                            <div class="product-price"><span>¥</span>2599</div>
+                            <div class="product-sales">已售 1.1万+</div>
+                            <div class="product-actions">
+                                <button class="btn-cart">加入购物车</button>
+                                <button class="btn-buy">立即购买</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-card">
+                        <div class="product-image">🧴</div>
+                        <div class="product-info">
+                            <div class="product-name">Estée Lauder 雅诗兰黛 小棕瓶精华 50ml</div>
+                            <div class="product-price"><span>¥</span>680</div>
+                            <div class="product-sales">已售 8.9万+</div>
+                            <div class="product-actions">
+                                <button class="btn-cart">加入购物车</button>
+                                <button class="btn-buy">立即购买</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-card">
+                        <div class="product-image">🛋️</div>
+                        <div class="product-info">
+                            <div class="product-name">北欧风格 布艺沙发 三人位 灰色</div>
+                            <div class="product-price"><span>¥</span>3999</div>
+                            <div class="product-sales">已售 5千+</div>
+                            <div class="product-actions">
+                                <button class="btn-cart">加入购物车</button>
+                                <button class="btn-buy">立即购买</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- 页脚 -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>购物指南</h4>
+                    <ul>
+                        <li><a href="#">购物流程</a></li>
+                        <li><a href="#">会员介绍</a></li>
+                        <li><a href="#">常见问题</a></li>
+                        <li><a href="#">联系客服</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>配送方式</h4>
+                    <ul>
+                        <li><a href="#">配送范围</a></li>
+                        <li><a href="#">配送时间</a></li>
+                        <li><a href="#">配送费用</a></li>
+                        <li><a href="#">验货与签收</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>售后服务</h4>
+                    <ul>
+                        <li><a href="#">退换货政策</a></li>
+                        <li><a href="#">价格保护</a></li>
+                        <li><a href="#">退款说明</a></li>
+                        <li><a href="#">取消订单</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>关于我们</h4>
+                    <ul>
+                        <li><a href="#">公司介绍</a></li>
+                        <li><a href="#">联系我们</a></li>
+                        <li><a href="#">加入我们</a></li>
+                        <li><a href="#">商务合作</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2024 优品商城 版权所有 | 京ICP备12345678号 | 京公网安备11010802012345号</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Banner轮播图功能
+        class BannerSlider {
+            constructor() {
+                this.slides = document.querySelectorAll('.banner-slide');
+                this.dots = document.querySelectorAll('.banner-dots .dot');
+                this.currentIndex = 0;
+                this.autoPlayInterval = null;
+                
+                this.init();
+            }
+            
+            init() {
+                // 绑定事件
+                document.querySelector('.prev').addEventListener('click', () => this.prev());
+                document.querySelector('.next').addEventListener('click', () => this.next());
+                
+                this.dots.forEach((dot, index) => {
+                    dot.addEventListener('click', () => this.goToSlide(index));
+                });
+                
+                // 自动播放
+                this.startAutoPlay();
+                
+                // 鼠标悬停暂停
+                document.querySelector('.banner').addEventListener('mouseenter', () => this.stopAutoPlay());
+                document.querySelector('.banner').addEventListener('mouseleave', () => this.startAutoPlay());
+            }
+            
+            showSlide(index) {
+                this.slides.forEach((slide, i) => {
+                    slide.classList.remove('active');
+                    this.dots[i].classList.remove('active');
+                });
+                
+                this.slides[index].classList.add('active');
+                this.dots[index].classList.add('active');
+                this.currentIndex = index;
+            }
+            
+            next() {
+                let nextIndex = (this.currentIndex + 1) % this.slides.length;
+                this.showSlide(nextIndex);
+            }
+            
+            prev() {
+                let prevIndex = (this.currentIndex - 1 + this.slides.length) % this.slides.length;
+                this.showSlide(prevIndex);
+            }
+            
+            goToSlide(index) {
+                this.showSlide(index);
+            }
+            
+            startAutoPlay() {
+                this.autoPlayInterval = setInterval(() => this.next(), 4000);
+            }
+            
+            stopAutoPlay() {
+                clearInterval(this.autoPlayInterval);
+            }
+        }
+        
+        // 购物车功能
+        function addToCart(productName) {
+            alert('"' + productName + '" 已加入购物车！');
+        }
+        
+        function buyNow(productName) {
+            alert('正在跳转到 "' + productName + '" 的购买页面...');
+        }
+        
+        // 绑定商品按钮事件
+        document.querySelectorAll('.btn-cart').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const productName = this.closest('.product-info').querySelector('.product-name').textContent;
+                addToCart(productName);
+            });
+        });
+        
+        document.querySelectorAll('.btn-buy').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const productName = this.closest('.product-info').querySelector('.product-name').textContent;
+                buyNow(productName);
+            });
+        });
+        
+        // 初始化轮播图
+        new BannerSlider();
+        
+        // 搜索功能
+        document.querySelector('.search-box button').addEventListener('click', function() {
+            const searchText = document.querySelector('.search-box input').value;
+            if (searchText.trim()) {
+                alert('搜索：' + searchText);
+            } else {
+                alert('请输入搜索内容');
+            }
+        });
+        
+        // 分类点击
+        document.querySelectorAll('.category-item').forEach(item => {
+            item.addEventListener('click', function() {
+                const categoryName = this.querySelector('.name').textContent;
+                alert('跳转到 "' + categoryName + '" 分类页面');
+            });
+        });
+    </script>
+</body>
+</html>

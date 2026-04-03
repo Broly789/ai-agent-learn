@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>优选商城 - 品质生活从这里开始</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Microsoft YaHei', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f5f5f5;
+        }
+
+        /* 导航栏 */
+        .navbar {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 15px 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            color: white;
+            text-decoration: none;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+
+        .nav-menu a {
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+            transition: opacity 0.3s;
+        }
+
+        .nav-menu a:hover {
+            opacity: 0.8;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        /* Banner */
+        .banner {
+            margin-top: 70px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .banner-slider {
+            display: flex;
+            transition: transform 0.5s ease;
+        }
+
+        .banner-item {
+            min-width: 100%;
+            height: 500px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .banner-item:nth-child(1) {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .banner-item:nth-child(2) {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+
+        .banner-item:nth-child(3) {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+
+        .banner-content {
+            text-align: center;
+            color: white;
+            padding: 20px;
+        }
+
+        .banner-content h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .banner-content p {
+            font-size: 20px;
+            margin-bottom: 30px;
+        }
+
+        .banner-btn {
+            background: white;
+            color: #667eea;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 30px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .banner-btn:hover {
+            transform: scale(1.05);
+        }
+
+        .banner-dots {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+        }
+
+        .banner-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.5);
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .banner-dot.active {
+            background: white;
+        }
+
+        /* 商品分类 */
+        .categories {
+            max-width: 1200px;
+            margin: 50px auto;
+            padding: 0 20px;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 32px;
+            margin-bottom: 40px;
+            color: #333;
+        }
+
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+
+        .category-item {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+        }
+
+        .category-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+
+        .category-icon {
+            font-size: 40px;
+            margin-bottom: 15px;
+        }
+
+        .category-name {
+            font-size: 18px;
+            color: #333;
+        }
+
+        /* 商品列表 */
+        .products {
+            max-width: 1200px;
+            margin: 50px auto;
+            padding: 0 20px;
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 25px;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 60px;
+        }
+
+        .product-info {
+            padding: 20px;
+        }
+
+        .product-name {
+            font-size: 16px;
+            color: #333;
+            margin-bottom: 10px;
+            height: 40px;
+            overflow: hidden;
+        }
+
+        .product-price {
+            font-size: 22px;
+            color: #e74c3c;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .product-btn {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: opacity 0.3s;
+        }
+
+        .product-btn:hover {
+            opacity: 0.9;
+        }
+
+        /* 特色服务 */
+        .features {
+            background: white;
+            padding: 60px 0;
+            margin-top: 50px;
+        }
+
+        .features-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 30px;
+        }
+
+        .feature-item {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .feature-icon {
+            font-size: 50px;
+            margin-bottom: 15px;
+        }
+
+        .feature-title {
+            font-size: 18px;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .feature-desc {
+            color: #666;
+            font-size: 14px;
+        }
+
+        /* 页脚 */
+        .footer {
+            background: #2c3e50;
+            color: white;
+            padding: 50px 0 20px;
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 40px;
+        }
+
+        .footer-section h3 {
+            font-size: 18px;
+            margin-bottom: 20px;
+            color: #667eea;
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 10px;
+        }
+
+        .footer-section ul li a {
+            color: #bdc3c7;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-section ul li a:hover {
+            color: white;
+        }
+
+        .footer-bottom {
+            max-width: 1200px;
+            margin: 30px auto 0;
+            padding: 20px;
+            text-align: center;
+            border-top: 1px solid #34495e;
+            color: #bdc3c7;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 1024px) {
+            .category-grid,
+            .product-grid,
+            .features-container,
+            .footer-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .banner-item {
+                height: 400px;
+            }
+
+            .banner-content h1 {
+                font-size: 36px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-menu {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: #667eea;
+                flex-direction: column;
+                padding: 20px;
+                gap: 15px;
+            }
+
+            .nav-menu.active {
+                display: flex;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .banner-item {
+                height: 300px;
+            }
+
+            .banner-content h1 {
+                font-size: 28px;
+            }
+
+            .banner-content p {
+                font-size: 16px;
+            }
+
+            .category-grid,
+            .product-grid,
+            .features-container,
+            .footer-container {
+                grid-template-columns: 1fr;
+            }
+
+            .section-title {
+                font-size: 24px;
+            }
+
+            .product-image {
+                height: 150px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .banner-item {
+                height: 250px;
+            }
+
+            .banner-content h1 {
+                font-size: 22px;
+            }
+
+            .banner-btn {
+                padding: 12px 30px;
+                font-size: 16px;
+            }
+
+            .logo {
+                font-size: 22px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="#" class="logo">🛒 优选商城</a>
+            <button class="mobile-menu-btn" onclick="toggleMenu()">☰</button>
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="#home">首页</a></li>
+                <li><a href="#products">商品</a></li>
+                <li><a href="#categories">分类</a></li>
+                <li><a href="#about">关于我们</a></li>
+                <li><a href="#contact">联系客服</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Banner -->
+    <section class="banner" id="home">
+        <div class="banner-slider" id="bannerSlider">
+            <div class="banner-item">
+                <div class="banner-content">
+                    <h1>品质生活 从这里开始</h1>
+                    <p>精选全球好物，为您打造理想生活</p>
+                    <button class="banner-btn">立即选购</button>
+                </div>
+            </div>
+            <div class="banner-item">
+                <div class="banner-content">
+                    <h1>新品上市 限时优惠</h1>
+                    <p>全场商品低至5折起</p>
+                    <button class="banner-btn">查看详情</button>
+                </div>
+            </div>
+            <div class="banner-item">
+                <div class="banner-content">
+                    <h1>会员专享 多重好礼</h1>
+                    <p>注册即送100元优惠券</p>
+                    <button class="banner-btn">立即注册</button>
+                </div>
+            </div>
+        </div>
+        <div class="banner-dots" id="bannerDots"></div>
+    </section>
+
+    <!-- 商品分类 -->
+    <section class="categories" id="categories">
+        <h2 class="section-title">商品分类</h2>
+        <div class="category-grid">
+            <div class="category-item">
+                <div class="category-icon">📱</div>
+                <div class="category-name">数码电子</div>
+            </div>
+            <div class="category-item">
+                <div class="category-icon">👕</div>
+                <div class="category-name">服饰鞋包</div>
+            </div>
+            <div class="category-item">
+                <div class="category-icon">🏠</div>
+                <div class="category-name">家居家装</div>
+            </div>
+            <div class="category-item">
+                <div class="category-icon">🍎</div>
+                <div class="category-name">食品生鲜</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 商品列表 -->
+    <section class="products" id="products">
+        <h2 class="section-title">热销商品</h2>
+        <div class="product-grid" id="productGrid">
+            <!-- 商品卡片将由JS生成 -->
+        </div>
+    </section>
+
+    <!-- 特色服务 -->
+    <section class="features">
+        <div class="features-container">
+            <div class="feature-item">
+                <div class="feature-icon">🚚</div>
+                <div class="feature-title">极速配送</div>
+                <div class="feature-desc">全国包邮 次日达</div>
+            </div>
+            <div class="feature-item">
+                <div class="feature-icon">🛡️</div>
+                <div class="feature-title">正品保障</div>
+                <div class="feature-desc">100%正品 假一赔十</div>
+            </div>
+            <div class="feature-item">
+                <div class="feature-icon">💳</div>
+                <div class="feature-title">安全支付</div>
+                <div class="feature-desc">多种支付方式</div>
+            </div>
+            <div class="feature-item">
+                <div class="feature-icon">🎧</div>
+                <div class="feature-title">贴心客服</div>
+                <div class="feature-desc">7×24小时在线</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 页脚 -->
+    <footer class="footer" id="contact">
+        <div class="footer-container">
+            <div class="footer-section">
+                <h3>关于我们</h3>
+                <ul>
+                    <li><a href="#">公司简介</a></li>
+                    <li><a href="#">发展历程</a></li>
+                    <li><a href="#">加入我们</a></li>
+                    <li><a href="#">媒体报道</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>购物指南</h3>
+                <ul>
+                    <li><a href="#">购物流程</a></li>
+                    <li><a href="#">会员介绍</a></li>
+                    <li><a href="#">积分规则</a></li>
+                    <li><a href="#">优惠券使用</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>售后服务</h3>
+                <ul>
+                    <li><a href="#">退换货政策</a></li>
+                    <li><a href="#">价格保护</a></li>
+                    <li><a href="#">退款说明</a></li>
+                    <li><a href="#">售后服务</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>联系我们</h3>
+                <ul>
+                    <li><a href="#">客服热线：400-888-8888</a></li>
+                    <li><a href="#">客服邮箱：service@example.com</a></li>
+                    <li><a href="#">工作时间：9:00-21:00</a></li>
+                    <li><a href="#">在线客服</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 优选商城 版权所有 | 京ICP备12345678号</p>
+        </div>
+    </footer>
+
+    <script>
+        // 商品数据
+        const products = [
+            { name: "智能手机 Pro Max", price: "¥5999", icon: "📱" },
+            { name: "无线蓝牙耳机", price: "¥299", icon: "🎧" },
+            { name: "时尚休闲运动鞋", price: "¥459", icon: "👟" },
+            { name: "智能手表 Series 5", price: "¥2999", icon: "⌚" },
+            { name: "笔记本电脑 15寸", price: "¥7999", icon: "💻" },
+            { name: "高清数码相机", price: "¥4599", icon: "📷" },
+            { name: "家用空气净化器", price: "¥1299", icon: "🌬️" },
+            { name: "品牌双肩背包", price: "¥399", icon: "🎒" }
+        ];
+
+        // 生成商品卡片
+        const productGrid = document.getElementById('productGrid');
+        products.forEach(product => {
+            const card = document.createElement('div');
+            card.className = 'product-card';
+            card.innerHTML = `
+                <div class="product-image">${product.icon}</div>
+                <div class="product-info">
+                    <h3 class="product-name">${product.name}</h3>
+                    <div class="product-price">${product.price}</div>
+                    <button class="product-btn" onclick="addToCart('${product.name}')">加入购物车</button>
+                </div>
+            `;
+            productGrid.appendChild(card);
+        });
+
+        // Banner轮播
+        let currentSlide = 0;
+        const bannerSlider = document.getElementById('bannerSlider');
+        const bannerDots = document.getElementById('bannerDots');
+        const totalSlides = 3;
+
+        // 创建指示点
+        for (let i = 0; i < totalSlides; i++) {
+            const dot = document.createElement('div');
+            dot.className = 'banner-dot' + (i === 0 ? ' active' : '');
+            dot.onclick = () => goToSlide(i);
+            bannerDots.appendChild(dot);
+        }
+
+        function updateDots() {
+            const dots = document.querySelectorAll('.banner-dot');
+            dots.forEach((dot, index) => {
+                dot.classList.toggle('active', index === currentSlide);
+            });
+        }
+
+        function goToSlide(index) {
+            currentSlide = index;
+            bannerSlider.style.transform = `translateX(-${currentSlide * 100}%)`;
+            updateDots();
+        }
+
+        function nextSlide() {
+            currentSlide = (currentSlide + 1) % totalSlides;
+            goToSlide(currentSlide);
+        }
+
+        // 自动轮播
+        setInterval(nextSlide, 5000);
+
+        // 移动端菜单切换
+        function toggleMenu() {
+            const navMenu = document.getElementById('navMenu');
+            navMenu.classList.toggle('active');
+        }
+
+        // 加入购物车
+        function addToCart(productName) {
+            alert(productName + ' 已加入购物车！');
+        }
+
+        // 平滑滚动
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                    // 移动端点击后关闭菜单
+                    document.getElementById('navMenu').classList.remove('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
