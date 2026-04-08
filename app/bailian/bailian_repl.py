@@ -1,27 +1,34 @@
-from langchain_core.prompts import PromptTemplate
 from langchain_experimental.tools.python.tool import PythonREPLTool
 from langchain.agents import create_agent
-
 from app.bailian.common import llm
 
+# 1. 定义工具
 tools = [PythonREPLTool()]
-tool_names = ["PythonREPLTool"]
 
-agent = create_agent(llm, tools)
+# 2. 定义系统规范 (System Prompt) - 专门约束智能体的行为和输出质量
+# 将你所有的排版要求、响应式要求和路径要求放进这里
+system_prompt = """你是一个全栈开发专家。
+你的任务是编写响应式的电商企业官网代码，必须严格遵循以下开发规范：
+1. 使用 HTML5/CSS3，必须实现移动端与 PC 端的响应式适配（媒体查询）。
+2. 代码排版必须结构清晰、格式规范，严禁所有元素堆叠在一行。
+3. 必须通过调用 PythonREPLTool，将生成的完整 HTML 代码保存到指定文件：
+   /Users/brolylee/2026web/ai-agent/.temp/index3.html
+4. 确保生成的 HTML 代码是完整可运行的。
+"""
 
-# 创建提示词模板
-prompt_template = PromptTemplate.from_template(
-    """你是一个全栈开发专家。你的任务是根据用户需求编写 HTML/JS 代码。
-用户输入：{input}"""
-)
+# 3. 初始化 Agent
+agent = create_agent(llm, tools, system_prompt=system_prompt)
 
-prompt = prompt_template.format(input="""
-创建一个PC电商企业官网 并支持响应式移动端布局，包含商品列表 banner。页面布局一定要符合PC端和移动端的布局规范。之前生成的网页都排在了一行很乱 请认真点。
-输出为/Users/brolylee/2026web/ai-agent/.temp/index2.html
-""")
+# 4. 定义业务需求 (User Input)
+# 此处仅描述“要做什么”，不包含行为规范
+user_task = """创建一个电商企业官网，包含商品列表、banner。"""
 
+# 5. 执行调用
+result = agent.invoke({
+    "messages": [
+        {"role": "user", "content": user_task}
+    ]
+})
 
-
-result = agent.invoke({"messages": [{"role": "user", "content": prompt}]})
+# 打印结果
 print(result["messages"][-1].content)
-

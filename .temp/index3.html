@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>智选商城 - 品质生活从这里开始</title>
+    <style>
+        /* 全局样式重置 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Microsoft YaHei', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f5f5f5;
+        }
+
+        /* 导航栏样式 */
+        .navbar {
+            background-color: #2c3e50;
+            padding: 15px 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .navbar-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            color: #fff;
+            font-size: 24px;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+
+        .nav-links a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 16px;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: #3498db;
+        }
+
+        /* Banner样式 */
+        .banner {
+            margin-top: 60px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            height: 500px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: #fff;
+            padding: 20px;
+        }
+
+        .banner-content h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .banner-content p {
+            font-size: 20px;
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+
+        .banner-btn {
+            background-color: #fff;
+            color: #667eea;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 30px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .banner-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        /* 商品列表样式 */
+        .products-section {
+            max-width: 1200px;
+            margin: 50px auto;
+            padding: 0 20px;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 36px;
+            margin-bottom: 40px;
+            color: #2c3e50;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 30px;
+        }
+
+        .product-card {
+            background: #fff;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .product-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 250px;
+            background: linear-gradient(45deg, #f3f4f6, #e5e7eb);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #9ca3af;
+            font-size: 48px;
+        }
+
+        .product-info {
+            padding: 20px;
+        }
+
+        .product-name {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+
+        .product-price {
+            color: #e74c3c;
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .product-btn {
+            width: 100%;
+            padding: 12px;
+            background-color: #3498db;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .product-btn:hover {
+            background-color: #2980b9;
+        }
+
+        /* 页脚样式 */
+        .footer {
+            background-color: #2c3e50;
+            color: #fff;
+            padding: 50px 0 20px;
+            margin-top: 50px;
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 40px;
+        }
+
+        .footer-section h3 {
+            font-size: 18px;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+            display: inline-block;
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 10px;
+        }
+
+        .footer-section ul li a {
+            color: #bdc3c7;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-section ul li a:hover {
+            color: #3498db;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 30px;
+            margin-top: 30px;
+            border-top: 1px solid #34495e;
+            color: #bdc3c7;
+        }
+
+        /* 响应式设计 - 平板端 */
+        @media (max-width: 1024px) {
+            .products-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .footer-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .banner-content h1 {
+                font-size: 36px;
+            }
+        }
+
+        /* 响应式设计 - 移动端 */
+        @media (max-width: 768px) {
+            .navbar-container {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .nav-links {
+                gap: 15px;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .banner {
+                height: 400px;
+                margin-top: 100px;
+            }
+
+            .banner-content h1 {
+                font-size: 28px;
+            }
+
+            .banner-content p {
+                font-size: 16px;
+            }
+
+            .banner-btn {
+                padding: 12px 30px;
+                font-size: 16px;
+            }
+
+            .products-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 20px;
+            }
+
+            .section-title {
+                font-size: 28px;
+            }
+
+            .footer-container {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .footer-section h3 {
+                border-bottom: none;
+            }
+        }
+
+        /* 响应式设计 - 小屏手机 */
+        @media (max-width: 480px) {
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .banner {
+                height: 350px;
+            }
+
+            .banner-content h1 {
+                font-size: 24px;
+            }
+
+            .product-image {
+                height: 200px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar">
+        <div class="navbar-container">
+            <a href="#" class="logo">🛒 智选商城</a>
+            <ul class="nav-links">
+                <li><a href="#home">首页</a></li>
+                <li><a href="#products">商品</a></li>
+                <li><a href="#about">关于我们</a></li>
+                <li><a href="#contact">联系客服</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Banner区域 -->
+    <section class="banner" id="home">
+        <div class="banner-content">
+            <h1>品质生活 从智选开始</h1>
+            <p>精选全球好物 享受超值优惠 品质保证 售后无忧</p>
+            <a href="#products" class="banner-btn">立即选购</a>
+        </div>
+    </section>
+
+    <!-- 商品列表区域 -->
+    <section class="products-section" id="products">
+        <h2 class="section-title">热销商品</h2>
+        <div class="products-grid">
+            <!-- 商品1 -->
+            <div class="product-card">
+                <div class="product-image">📱</div>
+                <div class="product-info">
+                    <h3 class="product-name">智能手机 Pro Max</h3>
+                    <p class="product-price">¥5,999</p>
+                    <button class="product-btn">加入购物车</button>
+                </div>
+            </div>
+
+            <!-- 商品2 -->
+            <div class="product-card">
+                <div class="product-image">💻</div>
+                <div class="product-info">
+                    <h3 class="product-name">轻薄笔记本电脑</h3>
+                    <p class="product-price">¥8,999</p>
+                    <button class="product-btn">加入购物车</button>
+                </div>
+            </div>
+
+            <!-- 商品3 -->
+            <div class="product-card">
+                <div class="product-image">🎧</div>
+                <div class="product-info">
+                    <h3 class="product-name">无线蓝牙耳机</h3>
+                    <p class="product-price">¥599</p>
+                    <button class="product-btn">加入购物车</button>
+                </div>
+            </div>
+
+            <!-- 商品4 -->
+            <div class="product-card">
+                <div class="product-image">⌚</div>
+                <div class="product-info">
+                    <h3 class="product-name">智能运动手表</h3>
+                    <p class="product-price">¥1,299</p>
+                    <button class="product-btn">加入购物车</button>
+                </div>
+            </div>
+
+            <!-- 商品5 -->
+            <div class="product-card">
+                <div class="product-image">📷</div>
+                <div class="product-info">
+                    <h3 class="product-name">数码相机</h3>
+                    <p class="product-price">¥4,599</p>
+                    <button class="product-btn">加入购物车</button>
+                </div>
+            </div>
+
+            <!-- 商品6 -->
+            <div class="product-card">
+                <div class="product-image">🎮</div>
+                <div class="product-info">
+                    <h3 class="product-name">游戏主机</h3>
+                    <p class="product-price">¥3,299</p>
+                    <button class="product-btn">加入购物车</button>
+                </div>
+            </div>
+
+            <!-- 商品7 -->
+            <div class="product-card">
+                <div class="product-image">🖥️</div>
+                <div class="product-info">
+                    <h3 class="product-name">4K显示器</h3>
+                    <p class="product-price">¥2,199</p>
+                    <button class="product-btn">加入购物车</button>
+                </div>
+            </div>
+
+            <!-- 商品8 -->
+            <div class="product-card">
+                <div class="product-image">🔌</div>
+                <div class="product-info">
+                    <h3 class="product-name">快充充电宝</h3>
+                    <p class="product-price">¥199</p>
+                    <button class="product-btn">加入购物车</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 页脚 -->
+    <footer class="footer" id="contact">
+        <div class="footer-container">
+            <div class="footer-section">
+                <h3>关于我们</h3>
+                <ul>
+                    <li><a href="#">公司简介</a></li>
+                    <li><a href="#">发展历程</a></li>
+                    <li><a href="#">加入我们</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>客户服务</h3>
+                <ul>
+                    <li><a href="#">帮助中心</a></li>
+                    <li><a href="#">退换货政策</a></li>
+                    <li><a href="#">配送说明</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>支付方式</h3>
+                <ul>
+                    <li><a href="#">支付宝</a></li>
+                    <li><a href="#">微信支付</a></li>
+                    <li><a href="#">银联支付</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>联系我们</h3>
+                <ul>
+                    <li><a href="#">客服热线：400-888-8888</a></li>
+                    <li><a href="#">邮箱：service@zhixuan.com</a></li>
+                    <li><a href="#">工作时间：9:00-18:00</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 智选商城 版权所有 | 京ICP备12345678号</p>
+        </div>
+    </footer>
+</body>
+</html>
