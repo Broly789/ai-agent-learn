@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>北京燕丹村 → 什刹海 路线规划</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+        
+        .header h1 {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        
+        .header p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+        }
+        
+        .card-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .card-title .icon {
+            width: 24px;
+            height: 24px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 14px;
+        }
+        
+        /* 天气卡片 */
+        .weather-card {
+            background: linear-gradient(135deg, #56CCF2 0%, #2F80ED 100%);
+            color: white;
+        }
+        
+        .weather-card .card-title {
+            color: white;
+        }
+        
+        .weather-card .card-title .icon {
+            background: rgba(255,255,255,0.3);
+        }
+        
+        .weather-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .weather-main {
+            text-align: center;
+        }
+        
+        .weather-icon {
+            font-size: 48px;
+            margin-bottom: 8px;
+        }
+        
+        .weather-temp {
+            font-size: 36px;
+            font-weight: 700;
+        }
+        
+        .weather-desc {
+            font-size: 14px;
+            opacity: 0.9;
+            margin-top: 4px;
+        }
+        
+        .weather-details {
+            display: flex;
+            gap: 20px;
+        }
+        
+        .weather-detail-item {
+            text-align: center;
+        }
+        
+        .weather-detail-label {
+            font-size: 12px;
+            opacity: 0.8;
+            margin-bottom: 4px;
+        }
+        
+        .weather-detail-value {
+            font-size: 16px;
+            font-weight: 600;
+        }
+        
+        .clothing-suggestion {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid rgba(255,255,255,0.3);
+        }
+        
+        .clothing-suggestion-title {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .clothing-suggestion-text {
+            font-size: 13px;
+            line-height: 1.6;
+            opacity: 0.95;
+        }
+        
+        /* 路线卡片 */
+        .route-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .route-stat {
+            text-align: center;
+        }
+        
+        .route-stat-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: #667eea;
+        }
+        
+        .route-stat-label {
+            font-size: 12px;
+            color: #999;
+            margin-top: 4px;
+        }
+        
+        .route-steps {
+            margin-bottom: 20px;
+        }
+        
+        .route-step {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 15px;
+            position: relative;
+        }
+        
+        .route-step:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            left: 15px;
+            top: 35px;
+            width: 2px;
+            height: 25px;
+            background: #e0e0e0;
+        }
+        
+        .step-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+        
+        .step-icon.walk {
+            background: #FFE5E5;
+            color: #FF6B6B;
+        }
+        
+        .step-icon.subway {
+            background: #E5F0FF;
+            color: #4A90D9;
+        }
+        
+        .step-icon.bus {
+            background: #E5FFF0;
+            color: #2ECC71;
+        }
+        
+        .step-content {
+            flex: 1;
+            padding-top: 4px;
+        }
+        
+        .step-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 4px;
+        }
+        
+        .step-desc {
+            font-size: 12px;
+            color: #666;
+            line-height: 1.5;
+        }
+        
+        .step-detail {
+            font-size: 11px;
+            color: #999;
+            margin-top: 4px;
+        }
+        
+        /* 导航按钮 */
+        .nav-btn {
+            display: block;
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+        
+        .nav-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5);
+        }
+        
+        .nav-btn:active {
+            transform: translateY(0);
+        }
+        
+        .nav-btn-icon {
+            margin-right: 8px;
+        }
+        
+        /* 路线方案选择 */
+        .route-options {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            overflow-x: auto;
+            padding-bottom: 10px;
+        }
+        
+        .route-option {
+            flex-shrink: 0;
+            padding: 12px 20px;
+            background: #f5f5f5;
+            border-radius: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: 2px solid transparent;
+        }
+        
+        .route-option.active {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+        
+        .route-option .time {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+        
+        .route-option .desc {
+            font-size: 11px;
+            opacity: 0.8;
+        }
+        
+        .route-option.active .desc {
+            opacity: 0.9;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚌 公交地铁路线规划</h1>
+            <p>明天早上 8:00 出发</p>
+        </div>
+        
+        <!-- 天气卡片 -->
+        <div class="card weather-card">
+            <div class="card-title">
+                <span class="icon">🌤</span>
+                明日天气
+            </div>
+            <div class="weather-info">
+                <div class="weather-main">
+                    <div class="weather-icon">☀️</div>
+                    <div class="weather-temp">24°</div>
+                    <div class="weather-desc">晴 | 周五</div>
+                </div>
+                <div class="weather-details">
+                    <div class="weather-detail-item">
+                        <div class="weather-detail-label">最低温</div>
+                        <div class="weather-detail-value">8°</div>
+                    </div>
+                    <div class="weather-detail-item">
+                        <div class="weather-detail-label">风向</div>
+                        <div class="weather-detail-value">西风</div>
+                    </div>
+                    <div class="weather-detail-item">
+                        <div class="weather-detail-label">风力</div>
+                        <div class="weather-detail-value">1-3级</div>
+                    </div>
+                </div>
+            </div>
+            <div class="clothing-suggestion">
+                <div class="clothing-suggestion-title">👔 穿衣建议</div>
+                <div class="clothing-suggestion-text">
+                    明日天气晴朗，气温适中（8°C-24°C）。建议穿着薄外套或长袖衬衫，早晚温差较大，请注意适时增减衣物。舒适运动鞋适合步行换乘。
+                </div>
+            </div>
+        </div>
+        
+        <!-- 路线卡片 -->
+        <div class="card">
+            <div class="card-title">
+                <span class="icon">🗺</span>
+                推荐路线
+            </div>
+            
+            <div class="route-info">
+                <div class="route-stat">
+                    <div class="route-stat-value">约84分钟</div>
+                    <div class="route-stat-label">预计耗时</div>
+                </div>
+                <div class="route-stat">
+                    <div class="route-stat-value">约24.4公里</div>
+                    <div class="route-stat-label">全程距离</div>
+                </div>
+                <div class="route-stat">
+                    <div class="route-stat-value">约3.0公里</div>
+                    <div class="route-stat-label">步行距离</div>
+                </div>
+            </div>
+            
+            <div class="route-steps">
+                <div class="route-step">
+                    <div class="step-icon walk">🚶</div>
+                    <div class="step-content">
+                        <div class="step-title">步行至天通苑东站</div>
+                        <div class="step-desc">沿太海路、北苑东路步行约1.9公里</div>
+                        <div class="step-detail">约28分钟</div>
+                    </div>
+                </div>
+                
+                <div class="route-step">
+                    <div class="step-icon subway">🚇</div>
+                    <div class="step-content">
+                        <div class="step-title">乘坐地铁17号线</div>
+                        <div class="step-desc">天通苑东 → 东大桥（7站）</div>
+                        <div class="step-detail">途经：清河营、红军营、望京西、太阳宫、西坝河、左家庄</div>
+                        <div class="step-detail">约30分钟</div>
+                    </div>
+                </div>
+                
+                <div class="route-step">
+                    <div class="step-icon walk">🚶</div>
+                    <div class="step-content">
+                        <div class="step-title">站内换乘</div>
+                        <div class="step-desc">步行至6号线站台</div>
+                        <div class="step-detail">约3分钟</div>
+                    </div>
+                </div>
+                
+                <div class="route-step">
+                    <div class="step-icon subway">🚇</div>
+                    <div class="step-content">
+                        <div class="step-title">乘坐地铁6号线</div>
+                        <div class="step-desc">东大桥 → 平安里（4站）</div>
+                        <div class="step-detail">途经：朝阳门、东四、南锣鼓巷、北海北</div>
+                        <div class="step-detail">约15分钟</div>
+                    </div>
+                </div>
+                
+                <div class="route-step">
+                    <div class="step-icon walk">🚶</div>
+                    <div class="step-content">
+                        <div class="step-title">步行至什刹海</div>
+                        <div class="step-desc">从平安里站B口出，沿护国寺街步行约810米</div>
+                        <div class="step-detail">约12分钟</div>
+                    </div>
+                </div>
+            </div>
+            
+            <a href="amapuri://navi?sourceApplication=amap_mcp&lon=116.376689&lat=39.934838&dev=1&style=2" class="nav-btn">
+                <span class="nav-btn-icon">🧭</span>
+                打开高德地图查看路线
+            </a>
+        </div>
+        
+        <!-- 备选路线 -->
+        <div class="card">
+            <div class="card-title">
+                <span class="icon">🔄</span>
+                备选方案
+            </div>
+            
+            <div class="route-options">
+                <div class="route-option active">
+                    <div class="time">84分钟</div>
+                    <div class="desc">地铁17号线+6号线</div>
+                </div>
+                <div class="route-option">
+                    <div class="time">86分钟</div>
+                    <div class="desc">公交+地铁5号线+6号线</div>
+                </div>
+                <div class="route-option">
+                    <div class="time">84分钟</div>
+                    <div class="desc">公交+地铁5号线+3路公交</div>
+                </div>
+            </div>
+            
+            <p style="font-size: 12px; color: #999; text-align: center;">
+                💡 推荐首选方案，耗时最短且换乘便捷
+            </p>
+        </div>
+        
+        <!-- 起点终点信息 -->
+        <div class="card">
+            <div class="card-title">
+                <span class="icon">📍</span>
+                行程信息
+            </div>
+            <div style="display: flex; justify-content: space-between; gap: 20px;">
+                <div style="flex: 1;">
+                    <div style="font-size: 12px; color: #999; margin-bottom: 4px;">出发地</div>
+                    <div style="font-size: 14px; font-weight: 600; color: #333;">北京燕丹村</div>
+                    <div style="font-size: 11px; color: #666; margin-top: 4px;">昌平区</div>
+                </div>
+                <div style="display: flex; align-items: center; color: #667eea;">
+                    <span style="font-size: 20px;">➜</span>
+                </div>
+                <div style="flex: 1; text-align: right;">
+                    <div style="font-size: 12px; color: #999; margin-bottom: 4px;">目的地</div>
+                    <div style="font-size: 14px; font-weight: 600; color: #333;">北京什刹海</div>
+                    <div style="font-size: 11px; color: #666; margin-top: 4px;">西城区</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // 路线选项点击效果
+        document.querySelectorAll('.route-option').forEach(option => {
+            option.addEventListener('click', function() {
+                document.querySelectorAll('.route-option').forEach(o => o.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+    </script>
+</body>
+</html>

@@ -2,6 +2,7 @@ from langchain_openai import ChatOpenAI
 from pydantic import SecretStr
 from langchain_core.prompts import PromptTemplate, ChatPromptTemplate, ChatMessagePromptTemplate, FewShotPromptTemplate
 from langchain_core.tools import tool
+from langchain_community.agent_toolkits import FileManagementToolkit
 from pydantic import BaseModel, Field
 
 llm = ChatOpenAI(
@@ -43,3 +44,6 @@ def create_calc_tools():
 calc_tools = create_calc_tools()
 
 structured_llm = llm.with_structured_output(AddInput)
+
+file_toolkit = FileManagementToolkit(root_dir="/Users/brolylee/2026web/ai-agent/.temp")
+file_tools = file_toolkit.get_tools()
