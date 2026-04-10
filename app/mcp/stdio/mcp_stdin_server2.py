@@ -28,4 +28,4 @@ def mul(a: int, b: int) -> int:
 # 启动服务
 # --------------------
 if __name__ == "__main__":
-    mcp.run(transport="streamable-http")
+    mcp.run(transport="stdio")  # ✅ 运行服务，使用 stdio 传输数据
