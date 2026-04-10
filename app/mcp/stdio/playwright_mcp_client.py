@@ -1,6 +1,8 @@
 import asyncio
+
+from langchain_core.messages import HumanMessage, AIMessage, ToolMessage
 from langchain_mcp_adapters.tools import load_mcp_tools
-from mcp import StdioServerParameters, ClientSession
+from mcp import StdioServerParameters, ClientSession, Tool
 from mcp.client.stdio import stdio_client
 from langchain.agents import create_agent
 from app.bailian.common import llm
@@ -35,12 +37,21 @@ async def create_stdio_client():
                 print(f" - {tool.name}: {tool.description}")
             agent = create_agent(llm, tools, debug=True)
 
-            response = await agent.ainvoke(input = {"messages": [("user", "在bilibili网站搜索周杰伦")]})
+            response = await agent.ainvoke(input = {"messages": [("user", "在百度查下后天北京的天气状况，并给我出行建议")]})
 
             # 提取最终结果
-            # final_message = result['messages'][-1]
-            # print(f"\n最终结果: {final_message.content}")
-            print(response)
+            messages = response["messages"]
+            for message in messages:
+                if isinstance(message, HumanMessage):
+                    print("用户:", message.content)
+                elif isinstance(message, AIMessage):
+                    if message.content:
+                        print("助手:", message.content)
+                    else:
+                       for tool_call in message.tool_calls:
+                           print("助手[调用工具]:", tool_call["name"], tool_call["args"])
+                elif isinstance(message, ToolMessage):
+                    print("助手[工具调用]:", message.name)
             # return result
 
 
