@@ -1,3 +1,0 @@
-[     303ms] [WARNING] document.domain mutation is ignored because the surrounding agent cluster is origin-keyed. @ https://s1.hdslb.com/bfs/static/laputa-search/client/assets/vendor.24f24acb.js:773
-[    1844ms] [INFO] %c bili-fe-mirror %c v2.0.18  padding: 2px 6px; border-radius: 3px 0 0 3px; color: #fff; background: #FF6699; font-weight: bold; padding: 2px 6px; border-radius: 0 3px 3px 0; color: #fff; background: #FF9999; font-weight: bold; @ https://s1.hdslb.com/bfs/seed/jinkela/short/b-mirror/biliMirror.umd.mini.js:1
-[    1845ms] [LOG] 白屏检测是否正常 {status: ok, loop: 0, data: Object} @ https://search.bilibili.com/all?keyword=%E5%91%A8%E6%9D%B0%E4%BC%A6&from_source=webtop_search&spm_id_from=333.1007&search_source=5:231
