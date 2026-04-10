@@ -1,5 +1,6 @@
+import os
 import asyncio
-
+from dotenv import load_dotenv
 from langchain_core.messages import HumanMessage, AIMessage, ToolMessage
 from langchain_mcp_adapters.tools import load_mcp_tools
 from mcp import StdioServerParameters, ClientSession, Tool
@@ -7,6 +8,9 @@ from mcp.client.stdio import stdio_client
 from langchain.agents import create_agent
 from app.bailian.common import llm
 
+# 正确加载优先级的环境变量文件
+load_dotenv("../../../.env")
+load_dotenv("../../../.env.local", override=True)
 
 # https://github.com/modelcontextprotocol/python-sdk?tab=readme-ov-file#writing-mcp-clients
 async def create_stdio_client():
@@ -17,9 +21,16 @@ async def create_stdio_client():
     建立会话，初始化并加载可用的工具列表。
     """
     # 配置服务器参数：使用 python3 执行当前的 server 脚本
+    github_access_token = os.getenv("GITHUB_PERSONAL_ACCESS_TOKEN")
     server_params = StdioServerParameters(
+        args=[
+        "-y",
+        "@modelcontextprotocol/server-github"
+         ],
         command="npx",
-        args=["-y", "@playwright/mcp@latest"],
+        env={
+                "GITHUB_PERSONAL_ACCESS_TOKEN": f"{github_access_token}"
+            }
     )
 
     # 建立 stdio 客户端连接
@@ -37,7 +48,7 @@ async def create_stdio_client():
                 print(f" - {tool.name}: {tool.description}")
             agent = create_agent(llm, tools, debug=True)
 
-            response = await agent.ainvoke(input = {"messages": [("user", "在百度查下后天北京的天气状况，并给我出行建议")]})
+            response = await agent.ainvoke(input = {"messages": [("user", "在github上搜索vue-element-admin项目 ，并给我项目介绍")]})
 
             # 提取最终结果
             messages = response["messages"]

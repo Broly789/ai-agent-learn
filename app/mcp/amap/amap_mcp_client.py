@@ -14,7 +14,8 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(level
 logger = logging.getLogger(__name__)
 
 # 加载环境变量，自动读取项目根目录的 .env 文件
-load_dotenv()
+load_dotenv("../../../.env")
+load_dotenv("../../../.env.local", override=True)
 
 async def create_amap_mcp_client():
     """
