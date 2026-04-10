@@ -5,7 +5,7 @@ from mcp.client.streamable_http import streamable_http_client  # 改1：换导�
 from langchain.agents import create_agent
 from app.bailian.common import llm
 
-
+# https://github.com/modelcontextprotocol/python-sdk?tab=readme-ov-file#writing-mcp-clients
 async def create_http_client():
     """
     连接到 Streamable HTTP MCP 服务器。

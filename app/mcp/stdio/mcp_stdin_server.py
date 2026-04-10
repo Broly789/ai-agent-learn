@@ -2,7 +2,7 @@
 from mcp.server.fastmcp import FastMCP
 
 # 创建一个 MCP 服务，名字叫 stdio_mcp（标识用）
-mcp = FastMCP("stdio_mcp")
+mcp = FastMCP("stdio_mcp", stateless_http= True, json_response=True)
 
 # --------------------
 # 工具 1：加法函数
