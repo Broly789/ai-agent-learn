@@ -1,14 +1,22 @@
+import os
+from dotenv import load_dotenv
+
 from langchain_openai import ChatOpenAI
 from pydantic import SecretStr
 from langchain_core.prompts import PromptTemplate, ChatPromptTemplate, ChatMessagePromptTemplate, FewShotPromptTemplate
 from langchain_core.tools import tool
 from langchain_community.agent_toolkits import FileManagementToolkit
 from pydantic import BaseModel, Field
+load_dotenv("/Users/brolylee/2026web/ai-agent/.env")
+load_dotenv("/Users/brolylee/2026web/ai-agent/.env.local", override=True)
+api_key = os.getenv("BAILIAN_QWEN_API_KEY")
+if not api_key:
+    raise ValueError("BAILIAN_QWEN_API_KEY environment variable is not set")
 
 llm = ChatOpenAI(
      model="qwen3.5-plus",
      base_url="https://dashscope.aliyuncs.com/compatible-mode/v1",
-     api_key=SecretStr("sk-e8b093d306e94a45a3b95c3f390104d8"),
+     api_key=SecretStr(api_key),
      streaming= True
 )
 
