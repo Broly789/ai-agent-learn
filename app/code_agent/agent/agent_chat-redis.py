@@ -2,7 +2,6 @@ from langchain_core.messages import HumanMessage
 from langchain.agents import create_agent
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langchain_core.runnables import RunnableConfig
-from langgraph.checkpoint.mongodb import MongoDBSaver
 
 from app.code_agent.tools.file_tools import file_tools
 from app.code_agent.model.qwen import llm_qwen
@@ -21,10 +20,10 @@ prompt = ChatPromptTemplate.from_messages([
     MessagesPlaceholder(variable_name="agent_scratchpad"),
 ])
 
-MONGODB_URL = "mongodb://127.0.0.1:27017"
-MONGODB_DB = "chat"
-def run_agent():
-    with MongoDBSaver.from_conn_string(MONGODB_URL, db_name=MONGODB_DB) as memory:
+def create_ai_agent():
+    with RedisSaver.from_conn_string("redis://127.0.0.1:6379") as memory:
+        # 创建必要的索引
+        memory.setup()
         agent = create_agent(
             model=llm_qwen,
             tools=file_tools,
@@ -32,18 +31,17 @@ def run_agent():
             checkpointer=memory,
             debug=True,
         )
-        config = RunnableConfig(configurable={"thread_id": 1})
-        res = agent.invoke(input={"messages": [HumanMessage(content="我叫什么，我喜欢什么")]}, config=config)
-        # print(res)
-        # print("="*50)
-        # res = agent.invoke(input={"messages": [HumanMessage(content="我叫Broly,我喜欢周杰伦。")]}, config=config)
-        print("=" * 50)
-        print(res)
-
-        memory.close()
+        return agent
 
 # ==========================
 # 测试（永久记忆）
 # ==========================
 if __name__ == "__main__":
-    run_agent()
+    config = RunnableConfig(configurable={"thread_id": 1})
+    agent = create_ai_agent()
+    # res = agent.invoke(input={"messages": [HumanMessage(content="我叫Broly,我喜欢龙珠布罗利")]}, config=config)
+    # print(res)
+    # print("="*50)
+    res = agent.invoke(input={"messages": [HumanMessage(content="我叫什么名字 YIYI一句话告诉我")]}, config=config)
+    print("="*50)
+    print(res)
