@@ -5,10 +5,11 @@ from langchain_openai import ChatOpenAI
 from pydantic import SecretStr
 import os
 
-# 获取项目根目录（app的父目录）
+# 获取项目根目录(app的父目录)
 project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-load_dotenv(os.path.join(project_root, ".env"))
-load_dotenv("../../.env.local", override=True)
+load_dotenv("/Users/brolylee/2026web/ai-agent/.env")
+load_dotenv("/Users/brolylee/2026web/ai-agent/.env.local", override=True)
+
 
 api_key = os.getenv("BAILIAN_QWEN_API_KEY")
 if not api_key:
