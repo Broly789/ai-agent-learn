@@ -31,25 +31,27 @@ class FileSaver(BaseCheckpointSaver[str]):
         thread_id = config["configurable"].get("thread_id")
         dir_path = os.path.join(self.base_path, str(thread_id))
         checkpoint_files = list(Path(dir_path).glob("*.json"))
-        checkpoint_files.sort(key=lambda x: x.stem, reverse=True)
-        latest_checkpoint = checkpoint_files[0]
-        checkpoint_id = latest_checkpoint.stem
-        checkpoint_file_path = self._get_checkpoint_path(thread_id, checkpoint_id)
-        with open(checkpoint_file_path, "r", encoding="utf-8") as f:
-            checkpoint_data = json.load(f)
+        if len(checkpoint_files) > 0 :
+            checkpoint_files.sort(key=lambda x: x.stem, reverse=True)
+            latest_checkpoint = checkpoint_files[0]
+            checkpoint_id = latest_checkpoint.stem
+            checkpoint_file_path = self._get_checkpoint_path(thread_id, checkpoint_id)
+            with open(checkpoint_file_path, "r", encoding="utf-8") as f:
+                checkpoint_data = json.load(f)
 
-        checkpoint = self._deserialize_checkpoint(checkpoint_data["checkpoint"])
-        metadata = self._deserialize_checkpoint(checkpoint_data["metadata"])
-        return CheckpointTuple(
-            config={
-                "configurable": {
-                    "thread_id": thread_id,
-                    "checkpoint_id": checkpoint_id,
+            checkpoint = self._deserialize_checkpoint(checkpoint_data["checkpoint"])
+            metadata = self._deserialize_checkpoint(checkpoint_data["metadata"])
+            return CheckpointTuple(
+                config={
+                    "configurable": {
+                        "thread_id": thread_id,
+                        "checkpoint_id": checkpoint_id,
+                    },
                 },
-            },
-            checkpoint=checkpoint,
-            metadata=metadata,
-        )
+                checkpoint=checkpoint,
+                metadata=metadata,
+            )
+        return None
 
     def _deserialize_checkpoint(self, data) -> Any:
         data = base64.b64decode(data.encode("utf-8"))
@@ -129,7 +131,10 @@ if __name__ == "__main__":
         # system_prompt="你是一个智能助手，你可以读取文件内容并根据文件内容回答问题。",
         debug=True,
     )
-    config = RunnableConfig(configurable={"thread_id": 1})
-    # res = agent.invoke(input={"messages": [HumanMessage(content="我叫Broly，我喜欢周杰伦")]}, config=config)
-    res = agent.invoke(input={"messages": [HumanMessage(content="我叫什么，我喜欢什么")]}, config=config)
-    print(res)
+    while True:
+        user_input = input("用户：")
+        if user_input.lower() == "exit":
+            break
+        config = RunnableConfig(configurable={"thread_id": 1})
+        res = agent.invoke(input={"messages": [HumanMessage(content=user_input)]}, config=config)
+        print("助手：", res["messages"][-1].content)
